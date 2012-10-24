@@ -915,6 +915,8 @@ namespace std {
     template<class InputIterator>
       basic_string(InputIterator begin, InputIterator end,
                    const Allocator& a = Allocator());
+    template<class Range>
+      explicit basic_string(Range&&, const Allocator& = Allocator());
     basic_string(initializer_list<charT>, const Allocator& = Allocator());
     basic_string(const basic_string&, const Allocator&);
     basic_string(basic_string&&, const Allocator&);
@@ -927,6 +929,8 @@ namespace std {
     basic_string& operator=(const charT* s);
     basic_string& operator=(charT c);
     basic_string& operator=(initializer_list<charT>);
+    template<class Range>
+      basic_string& operator=(Range&&);
 
     // \ref{string.iterators}, iterators:
     iterator       begin() noexcept;
@@ -972,6 +976,8 @@ namespace std {
     basic_string& operator+=(const charT* s);
     basic_string& operator+=(charT c);
     basic_string& operator+=(initializer_list<charT>);
+    template<class Range>
+      basic_string& operator+=(Range&&);
     basic_string& append(const basic_string& str);
     basic_string& append(const basic_string& str, size_type pos,
                          size_type n = npos);
@@ -981,6 +987,8 @@ namespace std {
     template<class InputIterator>
       basic_string& append(InputIterator first, InputIterator last);
     basic_string& append(initializer_list<charT>);
+    template<class Range>
+      basic_string& append(Range&&);
     void push_back(charT c);
 
     basic_string& assign(const basic_string& str);
@@ -995,6 +1003,8 @@ namespace std {
     template<class InputIterator>
       basic_string& assign(InputIterator first, InputIterator last);
     basic_string& assign(initializer_list<charT>);
+    template<class Range>
+      basic_string& assign(Range&&);
 
     basic_string& insert(size_type pos1, const basic_string& str);
     basic_string& insert(size_type pos1, const basic_string& str,
@@ -1007,6 +1017,8 @@ namespace std {
     template<class InputIterator>
       iterator insert(const_iterator p, InputIterator first, InputIterator last);
     iterator insert(const_iterator p, initializer_list<charT>);
+    template<class Range>
+      iterator insert(const_iterator p, Range&&);
 
     basic_string& erase(size_type pos = 0, size_type n = npos);
     iterator erase(const_iterator p);
@@ -1036,6 +1048,8 @@ namespace std {
       basic_string& replace(const_iterator i1, const_iterator i2,
                             InputIterator j1, InputIterator j2);
     basic_string& replace(const_iterator, const_iterator, initializer_list<charT>);
+    template<class Range>
+      basic_string& replace(const_iterator, const_iterator, Range&&);
 
     size_type copy(charT* s, size_type n, size_type pos = 0) const;
     void swap(basic_string& str)
@@ -1119,6 +1133,19 @@ as \tcode{charT}. Every object of type
 \tcode{Allocator} to allocate and free storage for the contained \tcode{charT}
 objects as needed. The \tcode{Allocator} object used shall be
 obtained as described in \ref{container.requirements.general}.
+
+\pnum
+Constructors and member functions taking a \tcode{Range} template
+argument shall not participate in overload resolution
+unless \tcode{Range} is a range
+type~(\ref{container.requirements.range}) with a value type
+implicitly convertible to \tcode{charT}.
+
+\pnum
+The char-like objects in a \tcode{basic_string} object shall be
+stored contiguously. That is, for any \tcode{basic_string} object \tcode{s},
+the identity \tcode{\&*(s.begin() + n) == \&*s.begin() + n} shall hold for all
+values of \tcode{n} such that \tcode{0 <= n < s.size()}.
 
 \pnum
 References, pointers, and iterators referring to the elements of a
@@ -1376,6 +1403,20 @@ basic_string(initializer_list<charT> il, const Allocator& a = Allocator());
 
 \indexlibrary{\idxcode{basic_string}!constructor}%
 \begin{itemdecl}
+template<class Range
+  basic_string(Range&& range, const Allocator& a = Allocator());
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\requires \tcode{range} is a valid range.
+
+\pnum
+\effects Same as \tcode{basic_string(begin(range), end(range), a)}.
+\end{itemdescr}
+
+\indexlibrary{\idxcode{basic_string}!constructor}%
+\begin{itemdecl}
 basic_string(const basic_string& str, const Allocator& alloc);
 basic_string(basic_string&& str, const Allocator& alloc);
 \end{itemdecl}
@@ -1499,6 +1540,24 @@ basic_string& operator=(initializer_list<charT> il);
 \begin{itemdescr}
 \pnum
 \effects As if by: \tcode{*this = basic_string(il);}
+
+\pnum
+\returns \tcode{*this}.
+\end{itemdescr}
+
+\indexlibrary{\idxcode{operator=}!\idxcode{basic_string}}%
+\indexlibrary{\idxcode{basic_string}!\idxcode{operator=}}%
+\begin{itemdecl}
+template<class Range>
+  basic_string& operator=(Range&& range);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\requires \tcode{range} is a valid range.
+
+\pnum
+\effects \tcode{*this = basic_string(std::forward<Range>(range))}.
 
 \pnum
 \returns \tcode{*this}.
@@ -1908,6 +1967,24 @@ basic_string& operator+=(initializer_list<charT> il);
 \returns \tcode{*this}.
 \end{itemdescr}
 
+\indexlibrary{\idxcode{operator+=}!\idxcode{basic_string}}%
+\indexlibrary{\idxcode{basic_string}!\idxcode{operator+=}}%
+\begin{itemdecl}
+template<class Range>
+  basic_string& operator+=(Range&& range);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\requires \tcode{range} is a valid range.
+
+\pnum
+\effects Calls \tcode{append(std::forward<Range>(range))}.
+
+\pnum
+\returns \tcode{*this}.
+\end{itemdescr}
+
 
 \rSec4[string::append]{\tcode{basic_string::append}}
 
@@ -2047,6 +2124,25 @@ basic_string& append(initializer_list<charT> il);
 \tcode{*this}.
 \end{itemdescr}
 
+\indexlibrary{\idxcode{append}!\idxcode{basic_string}}%
+\indexlibrary{\idxcode{basic_string}!\idxcode{append}}%
+\begin{itemdecl}
+template<class Range>
+  basic_string& append(Range&& range);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\requires \tcode{range} is a valid range.
+
+\pnum
+\effects Calls \tcode{append(begin(range), end(range))}.
+
+\pnum
+\returns
+\tcode{*this}.
+\end{itemdescr}
+
 \indexlibrary{\idxcode{push_back}!\idxcode{basic_string}}%
 \indexlibrary{\idxcode{basic_string}!\idxcode{push_back}}%
 \begin{itemdecl}
@@ -2177,6 +2273,23 @@ basic_string& assign(initializer_list<charT> il);
 \tcode{*this}.
 \end{itemdescr}
 
+\indexlibrary{\idxcode{assign}!\idxcode{basic_string}}%
+\indexlibrary{\idxcode{basic_string}!\idxcode{assign}}%
+\begin{itemdecl}
+template<class Range>
+  basic_string& assign(Range&& range);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\requires \tcode{range} is a valid range.
+
+\pnum
+\effects Calls \tcode{assign(begin(range), end(range))}.
+
+\pnum
+\returns \tcode{*this}.
+\end{itemdescr}
 
 \indexlibrary{\idxcode{length}!\idxcode{char_traits}}%
 \begin{itemdecl}
@@ -2393,6 +2506,25 @@ iterator insert(const_iterator p, initializer_list<charT> il);
 \pnum
 \returns An iterator which refers to the copy of the first inserted character, or
 \tcode{p} if \tcode{i1} is empty.
+\end{itemdescr}
+
+\indexlibrary{\idxcode{insert}!\idxcode{basic_string}}%
+\indexlibrary{\idxcode{basic_string}!\idxcode{insert}}%
+\begin{itemdecl}
+template<class Range>
+  iterator insert(const_iterator p, Range&& range);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\requires \tcode{range} is a valid range.
+
+\pnum
+\effects \tcode{insert(p, begin(range), end(range))}.
+
+\pnum
+\returns An iterator which refers to the copy of the first inserted character, or
+\tcode{p} if \tcode{range} is empty.
 \end{itemdescr}
 
 \rSec4[string::erase]{\tcode{basic_string::erase}}
@@ -2732,6 +2864,25 @@ basic_string& replace(const_iterator i1, const_iterator i2,
 \pnum
 \returns
 \tcode{*this}.
+\end{itemdescr}
+
+\indexlibrary{\idxcode{replace}!\idxcode{basic_string}}%
+\indexlibrary{\idxcode{basic_string}!\idxcode{replace}}%
+\begin{itemdecl}
+template<class Range>
+  basic_string& replace(const_iterator i1, const_iterator i2,
+                        Range&& range);
+\end{itemdecl}
+
+\begin{itemdescr}
+\pnum
+\requires \range{begin()}{i1}, \range{i1}{i2}, and \tcode{range} are valid ranges.
+
+\pnum
+\effects Calls \tcode{replace(i1 - begin(), i2 - i1, begin(range), end(range))}.
+
+\pnum
+\returns \tcode{*this}.
 \end{itemdescr}
 
 
