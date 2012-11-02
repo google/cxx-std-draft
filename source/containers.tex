@@ -1103,10 +1103,14 @@ rt fx3(const_iterator i1, const_iterator i2, Range&& range);
 are called with a type \tcode{Range} that does not qualify as a
 range~(\ref{container.requirements.range}), or the value type of this range is
 not convertible to \tcode{value_type}, then these functions and constructor
-shall not participate in overload resolution.  Further, if the range is passed
-as an rvalue, it is left in an unspecified state after the call.\footnote{This
-allows implementations to detect arguments that are containers and move, instead
-of copying, their contents.}
+shall not participate in overload resolution.  If the constructor
+or \tcode{operator=} are called with a type \tcode{Range} such
+that \tcode{decay<Range>::type} is the type of the container or a type derived
+from the container type, this constructor and function shall also not
+participate in overload resolution.  Further, if the range is passed as an
+rvalue, it is left in an unspecified state after the call.\footnote{This allows
+implementations to detect arguments that are containers and move, instead of
+copying, their contents.}
 \end{itemize}
 
 \pnum
@@ -1744,10 +1748,14 @@ rt fx2(Range&& range);
 are called with a type \tcode{Range} that does not qualify as a
 range~(\ref{container.requirements.range}), or the value type of this range is
 not convertible to \tcode{value_type}, then these functions and constructor
-shall not participate in overload resolution.  Further, if the range is passed
-as an rvalue, it is left in an unspecified state after the call.\footnote{This
-allows implementations to detect arguments that are containers and move, instead
-of copying, their contents.}
+shall not participate in overload resolution.  If the constructor
+or \tcode{operator=} are called with a type \tcode{Range} such
+that \tcode{decay<Range>::type} is the type of the container or a type derived
+from the container type, this constructor and function shall also not
+participate in overload resolution.  Further, if the range is passed as an
+rvalue, it is left in an unspecified state after the call.\footnote{This allows
+implementations to detect arguments that are containers and move, instead of
+copying, their contents.}
 
 \pnum
 The \tcode{insert} and \tcode{emplace} members shall not affect the validity of
@@ -2502,10 +2510,14 @@ rt fx2(Range&& range);
 are called with a type \tcode{Range} that does not qualify as a
 range~(\ref{container.requirements.range}), or the value type of this range is
 not convertible to \tcode{value_type}, then these functions and constructor
-shall not participate in overload resolution.  Further, if the range is passed
-as an rvalue, it is left in an unspecified state after the call.\footnote{This
-allows implementations to detect arguments that are containers and move, instead
-of copying, their contents.}
+shall not participate in overload resolution.  If the constructor
+or \tcode{operator=} are called with a type \tcode{Range} such
+that \tcode{decay<Range>::type} is the type of the container or a type derived
+from the container type, this constructor and function shall also not
+participate in overload resolution.  Further, if the range is passed as an
+rvalue, it is left in an unspecified state after the call.\footnote{This allows
+implementations to detect arguments that are containers and move, instead of
+copying, their contents.}
 
 \pnum
 Two unordered containers \tcode{a} and \tcode{b} compare equal if

@@ -1135,11 +1135,13 @@ objects as needed. The \tcode{Allocator} object used shall be
 obtained as described in \ref{container.requirements.general}.
 
 \pnum
-Constructors and member functions taking a \tcode{Range} template
-argument shall not participate in overload resolution
-unless \tcode{Range} is a range
-type~(\ref{container.requirements.range}) with a value type
-implicitly convertible to \tcode{charT}.
+Constructors and member functions taking a \tcode{Range} template argument shall
+not participate in overload resolution unless \tcode{Range} is a range
+type~(\ref{container.requirements.range}) with a value type implicitly
+convertible to \tcode{charT}.  \tcode{basic_string(Range\&\& range, const
+Allocator\& a = Allocator())} and \tcode{basic_string\& operator=(Range\&\&
+range)} shall additionally not participate if \tcode{decay<Range>::type}
+is \tcode{basic_string} or a type derived from \tcode{basic_string}.
 
 \pnum
 The char-like objects in a \tcode{basic_string} object shall be
