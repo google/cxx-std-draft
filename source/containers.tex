@@ -1083,7 +1083,7 @@ shall not participate in overload resolution.
 
 \begin{codeblock}
 template <class Range>
-X(Range&& range,
+explicit X(Range&& range,
   const allocator_type& alloc = allocator_type())
 \end{codeblock}
 
@@ -1733,7 +1733,7 @@ For every associative container defined in this Clause, if the constructor
 
 \begin{codeblock}
 template <class Range>
-X(Range&& range,
+explicit X(Range&& range,
   const Compare& = Compare(),
   const Allocator& alloc = Allocator())
 \end{codeblock}
@@ -2493,7 +2493,7 @@ constructor
 
 \begin{codeblock}
 template <class Range>
-X(Range&& range,
+explicit X(Range&& range,
   size_type = @\seebelow@,
   const hasher& hf = hasher(),
   const key_equal& eql = key_equal(),
@@ -3111,7 +3111,7 @@ namespace std {
     deque(deque&&, const Allocator&);
     deque(initializer_list<T>, const Allocator& = Allocator());
     template <class Range>
-      deque(Range&&, const Allocator& = Allocator());
+      explicit deque(Range&&, const Allocator& = Allocator());
 
     ~deque();
     deque& operator=(const deque& x);
@@ -3505,7 +3505,7 @@ namespace std {
     forward_list(forward_list&& x, const Allocator&);
     forward_list(initializer_list<T>, const Allocator& = Allocator());
     template <class Range>
-      forward_list(Range&&, const Allocator& = Allocator());
+      explicit forward_list(Range&&, const Allocator& = Allocator());
     ~forward_list();
     forward_list& operator=(const forward_list& x);
     forward_list& operator=(forward_list&& x)
@@ -4267,7 +4267,7 @@ namespace std {
     list(list&&, const Allocator&);
     list(initializer_list<T>, const Allocator& = Allocator());
     template <class Range>
-      list(Range&&, const Allocator& = Allocator());
+      explicit list(Range&&, const Allocator& = Allocator());
    ~list();
     list& operator=(const list& x);
     list& operator=(list&& x)
@@ -4970,7 +4970,7 @@ namespace std {
     vector(vector&&, const Allocator&);
     vector(initializer_list<T>, const Allocator& = Allocator());
     template <class Range>
-      vector(Range&&, const Allocator& = Allocator());
+      explicit vector(Range&&, const Allocator& = Allocator());
    ~vector();
     vector& operator=(const vector& x);
     vector& operator=(vector&& x)
@@ -5841,7 +5841,7 @@ namespace std {
       const Compare& = Compare(),
       const Allocator& = Allocator());
     template <class Range>
-      map(Range&&,
+      explicit map(Range&&,
         const Compare& = Compare(),
         const Allocator& = Allocator());
    ~map();
@@ -6358,7 +6358,7 @@ namespace std {
       const Compare& = Compare(),
       const Allocator& = Allocator());
     template <class Range>
-      multimap(Range&&,
+      explicit multimap(Range&&,
         const Compare& = Compare(),
         const Allocator& = Allocator());
    ~multimap();
@@ -6643,7 +6643,7 @@ namespace std {
       const Compare& = Compare(),
       const Allocator& = Allocator());
     template <class Range>
-      set(Range&&,
+      explicit set(Range&&,
         const Compare& = Compare(),
         const Allocator& = Allocator());
    ~set();
@@ -6900,7 +6900,7 @@ namespace std {
       const Compare& = Compare(),
       const Allocator& = Allocator());
     template <class Range>
-      multiset(Range&&,
+      explicit multiset(Range&&,
         const Compare& = Compare(),
         const Allocator& = Allocator());
    ~multiset();
@@ -7289,7 +7289,7 @@ namespace std {
       const key_equal& eql = key_equal(),
       const allocator_type& a = allocator_type());
     template <class Range>
-      unordered_map(Range&&,
+      explicit unordered_map(Range&&,
         size_type = @\seebelow@,
         const hasher& hf = hasher(),
         const key_equal& eql = key_equal(),
@@ -7784,7 +7784,7 @@ namespace std {
       const key_equal& eql = key_equal(),
       const allocator_type& a = allocator_type());
     template <class Range>
-      unordered_multimap(Range&&,
+      explicit unordered_multimap(Range&&,
         size_type = @\seebelow@,
         const hasher& hf = hasher(),
         const key_equal& eql = key_equal(),
@@ -8062,7 +8062,7 @@ namespace std {
       const key_equal& eql = key_equal(),
       const allocator_type& a = allocator_type());
     template <class Range>
-      unordered_set(Range&&,
+      explicit unordered_set(Range&&,
         size_type = @\seebelow@,
         const hasher& hf = hasher(),
         const key_equal& eql = key_equal(),
@@ -8308,7 +8308,7 @@ namespace std {
       const key_equal& eql = key_equal(),
       const allocator_type& a = allocator_type());
     template <class Range>
-      unordered_multiset(Range&&,
+      explicit unordered_multiset(Range&&,
         size_type = @\seebelow@,
         const hasher& hf = hasher(),
         const key_equal& eql = key_equal(),
