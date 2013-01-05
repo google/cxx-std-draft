@@ -1285,6 +1285,7 @@ types that support null values.
 \ref{hash.requirements} describes the requirements on hash function objects.
 \ref{allocator.requirements} describes the requirements on storage
 allocators.
+\ref{range.requirements} describes the requirements on range types.
 
 \rSec3[utility.arg.requirements]{Template argument requirements}
 
@@ -2005,6 +2006,81 @@ whether or not \tcode{T} is a complete type:
 \item all the member types of \tcode{allocator_traits<X>}~\ref{allocator.traits}
   other than \tcode{value_type} are complete types.
 \end{itemize}
+
+\rSec3[range.requirements]{Range requirements}
+
+\pnum
+Ranges are objects which refer to a sequence of other objects using a
+pair of iterators accessed by \tcode{begin()} and \tcode{end()}
+functions.  Ranges may or may not contain and own these objects.
+
+\pnum
+This subclause provides definitions for range types and expressions.  In this
+subclause, \tcode{r} is an instance of a \defn{range type} \tcode{R}.  \tcode{i}
+is an instance of \tcode{I}, known as \tcode{R}'s iterator type.  \tcode{V}
+is \tcode{R}'s and \tcode{I}'s value type.
+
+\pnum
+\enternote These requirements are
+intended to match the requirements on \tcode{_RangeT} in the range-based for
+loop~(\ref{stmt.ranged}). \exitnote
+
+\rSec4[range.requirements.implementations]{Functions taking Range types}
+
+\pnum
+\tcode{R} is a range type if it satisfies the requirements in Table~\ref{range}.
+
+\indextext{requirements!\idxcode{Range}}%
+\begin{concepttable}
+{\tcode{Range} requirements}
+{range}
+{ll}
+\topline
+Expression  &   Return type \\ \capsep
+\tcode{begin(r)}    &  \tcode{I}  \\ \rowsep
+\tcode{end(r)}      &  \tcode{I}  \\ \rowsep
+\tcode{*i}          &  implicitly convertible to \tcode{V}  \\ \rowsep
+\end{concepttable}
+
+\pnum
+The context in which \tcode{begin(r)}
+and \tcode{end(r)} are evaluated shall ensure that a unary non-member function
+named ``begin'' or ``end'' respectively is selected via overload
+resolution~(\ref{over.match}) on a candidate set that includes:
+
+\begin{itemize}
+\item the three \tcode{begin} or \tcode{end} function templates defined in
+\tcode{<iterator>}~(\ref{iterator.range}) and
+
+\item the lookup set produced by argument-dependent lookup~(\ref{basic.lookup.argdep}).
+\end{itemize}
+
+\enternote If \tcode{R} is an array of fundamental type and the declarations
+from the header \tcode{<iterator>} are in scope, the overall lookup set
+described above is equivalent to that of the qualified name lookup applied to
+the expression \tcode{std::begin(r)} or \tcode{std::end(r)} as
+appropriate. \exitnote
+
+\enternote It is unspecified whether a library component that has a range
+requirement includes the header \tcode{<iterator>} to ensure an appropriate
+evaluation context. \exitnote
+
+\pnum
+Several functions in the standard library take a template argument named
+``\tcode{Range}''.  These functions shall not participate in overload resolution
+if \tcode{Range} is not a range type.  Additionally, implementations may exclude
+these functions from overload resolution if \tcode{Range's} iterator type is not
+an Input Iterator type~(\ref{input.iterators}), but the extent to which they do
+so is unspecified.
+
+\rSec4[range.requirements.calls]{Passing Range arguments}
+
+\pnum
+In calls to functions taking template arguments named \tcode{Range},
+if \tcode{Range}'s iterator type does not satisfy at least the Input Iterator
+requirements~(\ref{input.iterators}), the program is ill-formed, no diagnostic
+required.  If the range value is not a valid
+range~(\ref{iterator.requirements.general}), the behavior is undefined.
 
 \rSec2[constraints]{Constraints on programs}
 

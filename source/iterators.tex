@@ -184,20 +184,26 @@ they refer to elements of the same sequence.
 Most of the library's algorithmic templates that operate on data structures have interfaces that use ranges.
 A
 \term{range}
-is a pair of iterators that designate the beginning and end of the computation.
-A range \range{i}{i}
+is either a pair of iterators that designate the beginning and end of
+the computation or an object \tcode{r} of Range type for
+which \tcode{begin(r)} and \tcode{end(r)}, when evaluated in the
+context described in \ref{range.requirements.implementations}, return iterators that
+designate the beginning and end of the computation.
+A range \range{i}{i} or \tcode{r} such that \tcode{begin(r) == end(r)}
 is an empty range;
-in general, a range \range{i}{j}
+in general, a range \range{i}{j} or \tcode{r}
 refers to the elements in the data structure starting with the element
 pointed to by
-\tcode{i}
+\tcode{i} or \tcode{begin(r)}
 and up to but not including the element pointed to by
-\tcode{j}.
+\tcode{j} or \tcode{end(r)}.
 Range \range{i}{j}
 is valid if and only if
 \tcode{j}
 is reachable from
-\tcode{i}.
+\tcode{i}, and range \tcode{r} is valid if and only if \tcode{end(r)}
+is reachable from \tcode{begin(r)}.
+
 The result of the application of functions in the library to invalid ranges is
 undefined.
 

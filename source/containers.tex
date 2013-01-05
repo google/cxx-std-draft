@@ -34,57 +34,6 @@ Table~\ref{tab:containers.lib.summary}.
 \rSec1[container.requirements]{Container requirements}%
 \indextext{requirements!container}
 
-\rSec2[container.requirements.range]{Range requirements}
-
-\pnum
-Ranges are objects which refer to a sequence of other objects using a
-pair of iterators accessed by \tcode{begin()} and \tcode{end()}
-functions.  Ranges may or may not contain and own these objects.
-
-\pnum
-In Table~\ref{tab:containers.range.requirements}, \tcode{R} denotes a
-range class that refers to objects of type \tcode{T}.  \tcode{a}
-denotes an lvalue of type \tcode{R}.
-
-\begin{libreqtab2}
-{Range requirements}
-{tab:containers.range.requirements}
-\\ \topline
-\lhdr{Expression}       &   \rhdr{Return type}   \\ \capsep
-\endfirsthead
-\continuedcaption\\
-\hline
-\lhdr{Expression}       &   \rhdr{Return type}   \\ \capsep
-\endhead
-
-\tcode{using std::begin; begin(a)}  &
-input iterator type whose value type is \tcode{T}   \\ \rowsep
-
-\tcode{using std::end; end(a)}  &
-input iterator type whose value type is \tcode{T}  \\
-
-\end{libreqtab2}
-
-\pnum
-In a context where namespace \tcode{std} is an associated namespace,
-\tcode{begin(a)}
-returns an iterator referring to the first element in the range.
-\tcode{end(a)} returns an iterator which is the past-the-end value for the
-range.  A type is known as a \textit{range type}
-if \tcode{common_type<decltype(begin(a)), decltype(end(a))>::type} is an
-InputIterator type~(\ref{input.iterators}).  This type is known as
-the \textit{iterator type of the range \tcode{a}}.  The value type of this
-iterator is also the value type of the range.  \enternote These requirements are
-intended to match the requirements on \tcode{_RangeT} in the range-based for
-loop~(\ref{stmt.ranged}). \exitnote
-
-\pnum
-\tcode{a} is a valid range if and only if \range{begin(a)}{end(a)} is a valid
-range.
-
-\pnum
-A range \tcode{a} is \textit{empty} if and only if \tcode{begin(a) == end(a)}.
-
 \rSec2[container.requirements.general]{General container requirements}
 
 \pnum
@@ -817,7 +766,7 @@ denote iterators satisfying input iterator requirements
 and refer to elements implicitly convertible to \tcode{value_type},
 \tcode{[i, j)}
 denotes a valid range,
-\tcode{r} denotes a valid range~(\ref{container.requirements.range}) whose
+\tcode{r} denotes a valid range~(\ref{range.requirements.implementations}) whose
 value type is implicitly convertible to \tcode{value_type},
 \tcode{il} designates an object of type \tcode{initializer_list<value_type>},
 \tcode{n}
@@ -1101,7 +1050,7 @@ rt fx3(const_iterator i1, const_iterator i2, Range&& range);
 \end{codeblock}
 
 are called with a type \tcode{Range} that does not qualify as a
-range~(\ref{container.requirements.range}), or the value type of this range is
+range~(\ref{range.requirements.implementations}), or the value type of this range is
 not convertible to \tcode{value_type}, then these functions and constructor
 shall not participate in overload resolution.  If the constructor
 or \tcode{operator=} are called with a type \tcode{Range} such
@@ -1391,7 +1340,7 @@ denotes a valid range,
 \tcode{q} denotes a valid dereferenceable const iterator to \tcode{a},
 \tcode{r} denotes a valid dereferenceable iterator to \tcode{a},
 \tcode{[q1, q2)} denotes a valid range of const iterators in \tcode{a},
-\tcode{r} denotes a valid range~(\ref{container.requirements.range}) whose
+\tcode{r} denotes a valid range~(\ref{range.requirements.implementations}) whose
 value type is implicitly convertible to \tcode{value_type},
 \tcode{il} designates an object of type \tcode{initializer_list<value_type>},
 \tcode{t} denotes a value of type \tcode{X::value_type},
@@ -1746,7 +1695,7 @@ rt fx2(Range&& range);
 \end{codeblock}
 
 are called with a type \tcode{Range} that does not qualify as a
-range~(\ref{container.requirements.range}), or the value type of this range is
+range~(\ref{range.requirements.implementations}), or the value type of this range is
 not convertible to \tcode{value_type}, then these functions and constructor
 shall not participate in overload resolution.  If the constructor
 or \tcode{operator=} are called with a type \tcode{Range} such
@@ -2508,7 +2457,7 @@ rt fx2(Range&& range);
 \end{codeblock}
 
 are called with a type \tcode{Range} that does not qualify as a
-range~(\ref{container.requirements.range}), or the value type of this range is
+range~(\ref{range.requirements.implementations}), or the value type of this range is
 not convertible to \tcode{value_type}, then these functions and constructor
 shall not participate in overload resolution.  If the constructor
 or \tcode{operator=} are called with a type \tcode{Range} such

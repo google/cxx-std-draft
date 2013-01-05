@@ -1137,7 +1137,7 @@ obtained as described in \ref{container.requirements.general}.
 \pnum
 Constructors and member functions taking a \tcode{Range} template argument shall
 not participate in overload resolution unless \tcode{Range} is a range
-type~(\ref{container.requirements.range}) with a value type implicitly
+type~(\ref{range.requirements.implementations}) with a value type implicitly
 convertible to \tcode{charT}.  \tcode{basic_string(Range\&\& range, const
 Allocator\& a = Allocator())} and \tcode{basic_string\& operator=(Range\&\&
 range)} shall additionally not participate if \tcode{decay<Range>::type}
