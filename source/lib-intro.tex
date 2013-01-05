@@ -2068,10 +2068,22 @@ evaluation context. \exitnote
 \pnum
 Several functions in the standard library take a template argument named
 ``\tcode{Range}''.  These functions shall not participate in overload resolution
-if \tcode{Range} is not a range type.  Additionally, implementations may exclude
-these functions from overload resolution if \tcode{Range's} iterator type is not
-an Input Iterator type~(\ref{input.iterators}), but the extent to which they do
-so is unspecified.
+if \tcode{Range} is not deduced to a range type.  Further, if the function is a
+container or string's constructor or \tcode{operator=},
+and \tcode{decay<Range>::type} is the type of the container or a type derived
+from the container type, the function shall not participate in overload
+resolution.
+
+\pnum
+Additionally, implementations may exclude these functions from overload
+resolution if \tcode{Range's} iterator type is not an Input Iterator
+type~(\ref{input.iterators}) or its value type is not convertible to the
+container's value type, but the extent to which they do so is unspecified.
+
+\pnum
+If the range is passed as an rvalue, it is left in an unspecified state after
+the call.\footnote{This allows implementations to detect arguments that are
+containers and move, instead of copying, their contents.}
 
 \rSec4[range.requirements.calls]{Passing Range arguments}
 

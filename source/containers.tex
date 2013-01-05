@@ -1027,39 +1027,6 @@ template <class InputIterator>          // such as replace()
 are called with a type \tcode{InputIterator} that does not qualify as an input
 iterator, then these functions
 shall not participate in overload resolution.
-
-\item If the constructor
-
-\begin{codeblock}
-template <class Range>
-explicit X(Range&& range,
-  const allocator_type& alloc = allocator_type())
-\end{codeblock}
-
-or the member functions of the forms:
-
-\begin{codeblock}
-template <class Range>          // such as insert()
-rt fx1(const_iterator p, Range&& range);
-
-template <class Range>          // such as append(), assign()
-rt fx2(Range&& range);
-
-template <class Range>          // such as replace()
-rt fx3(const_iterator i1, const_iterator i2, Range&& range);
-\end{codeblock}
-
-are called with a type \tcode{Range} that does not qualify as a
-range~(\ref{range.requirements.implementations}), or the value type of this range is
-not convertible to \tcode{value_type}, then these functions and constructor
-shall not participate in overload resolution.  If the constructor
-or \tcode{operator=} are called with a type \tcode{Range} such
-that \tcode{decay<Range>::type} is the type of the container or a type derived
-from the container type, this constructor and function shall also not
-participate in overload resolution.  Further, if the range is passed as an
-rvalue, it is left in an unspecified state after the call.\footnote{This allows
-implementations to detect arguments that are containers and move, instead of
-copying, their contents.}
 \end{itemize}
 
 \pnum
@@ -1676,35 +1643,6 @@ and \tcode{e} in \tcode{a};
  \tcode{a_tran.lower_bound(ke), a_tran.upper_bound(ke))}.    &
  logarithmic                    \\
 \end{libreqtab4b}
-
-\pnum
-For every associative container defined in this Clause, if the constructor
-
-\begin{codeblock}
-template <class Range>
-explicit X(Range&& range,
-  const Compare& = Compare(),
-  const Allocator& alloc = Allocator())
-\end{codeblock}
-
-or the member functions of the form:
-
-\begin{codeblock}
-template <class Range>          // such as insert(), operator=()
-rt fx2(Range&& range);
-\end{codeblock}
-
-are called with a type \tcode{Range} that does not qualify as a
-range~(\ref{range.requirements.implementations}), or the value type of this range is
-not convertible to \tcode{value_type}, then these functions and constructor
-shall not participate in overload resolution.  If the constructor
-or \tcode{operator=} are called with a type \tcode{Range} such
-that \tcode{decay<Range>::type} is the type of the container or a type derived
-from the container type, this constructor and function shall also not
-participate in overload resolution.  Further, if the range is passed as an
-rvalue, it is left in an unspecified state after the call.\footnote{This allows
-implementations to detect arguments that are containers and move, instead of
-copying, their contents.}
 
 \pnum
 The \tcode{insert} and \tcode{emplace} members shall not affect the validity of
@@ -2435,38 +2373,6 @@ the number of elements erased.
   Average case linear in \tcode{a.size()}, worst case quadratic. \\
 
 \end{libreqtab4d}
-
-\pnum
-For every unordered associative container defined in this Clause, if the
-constructor
-
-\begin{codeblock}
-template <class Range>
-explicit X(Range&& range,
-  size_type = @\seebelow@,
-  const hasher& hf = hasher(),
-  const key_equal& eql = key_equal(),
-  const allocator_type& a = allocator_type())
-\end{codeblock}
-
-or the member functions of the form:
-
-\begin{codeblock}
-template <class Range>          // such as insert(), operator=()
-rt fx2(Range&& range);
-\end{codeblock}
-
-are called with a type \tcode{Range} that does not qualify as a
-range~(\ref{range.requirements.implementations}), or the value type of this range is
-not convertible to \tcode{value_type}, then these functions and constructor
-shall not participate in overload resolution.  If the constructor
-or \tcode{operator=} are called with a type \tcode{Range} such
-that \tcode{decay<Range>::type} is the type of the container or a type derived
-from the container type, this constructor and function shall also not
-participate in overload resolution.  Further, if the range is passed as an
-rvalue, it is left in an unspecified state after the call.\footnote{This allows
-implementations to detect arguments that are containers and move, instead of
-copying, their contents.}
 
 \pnum
 Two unordered containers \tcode{a} and \tcode{b} compare equal if
