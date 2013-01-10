@@ -766,7 +766,7 @@ denote iterators satisfying input iterator requirements
 and refer to elements implicitly convertible to \tcode{value_type},
 \tcode{[i, j)}
 denotes a valid range,
-\tcode{r} denotes a valid range~(\ref{range.requirements.implementations}) whose
+\tcode{r} denotes a valid range~(\ref{iterator.requirements.general}) whose
 value type is implicitly convertible to \tcode{value_type},
 \tcode{il} designates an object of type \tcode{initializer_list<value_type>},
 \tcode{n}
@@ -1307,7 +1307,7 @@ denotes a valid range,
 \tcode{q} denotes a valid dereferenceable const iterator to \tcode{a},
 \tcode{r} denotes a valid dereferenceable iterator to \tcode{a},
 \tcode{[q1, q2)} denotes a valid range of const iterators in \tcode{a},
-\tcode{r} denotes a valid range~(\ref{range.requirements.implementations}) whose
+\tcode{r} denotes a valid range~(\ref{iterator.requirements.general}) whose
 value type is implicitly convertible to \tcode{value_type},
 \tcode{il} designates an object of type \tcode{initializer_list<value_type>},
 \tcode{t} denotes a value of type \tcode{X::value_type},
@@ -3710,12 +3710,6 @@ template <class Range>
 \end{itemdecl}
 
 \begin{itemdescr}
-\pnum
-\remarks This signature shall not participate in overload resolution unless
-\tcode{Range} is a range type whose value type is implicitly convertible to
-\tcode{value_type}.  If the range is passed as an rvalue, it is left in an
-unspecified state after the call.
-
 \pnum
 \effects \tcode{insert_after(p, begin(range), end(range))}.
 
