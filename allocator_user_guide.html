@@ -25,13 +25,14 @@
         2014-08-10: Add offset pointer example and code
         2014-08-11: Add library issues that affect allocators
         2015-04-27: Fix explanation of NullablePointer regarding trivial constructibility
+        2016-09-06: Fix pointer types in Node<T> example and explain constructibility
 
   -->
 
   <body>
     <div class="docinfo">
       <!-- p>ISO/IEC JTC1 SC22 WG21 N????</p -->
-      <p>Date: 2015-04-27</p>
+      <p>Date: 2016-09-06</p>
       <address>Thomas K&ouml;ppe &lt;<a href="mailto:tkoeppe@google.com">tkoeppe@google.com</a>&gt;</address>
     </div>
 
@@ -335,12 +336,13 @@ AllocTraits::deallocate(a, ptr, 1);                         // deallocate elemen
 
     <h3>An example: the linked list</h3>
 
-    <p>This example is worth spelling out in detail. Suppose we have elements of type <code>T</code>, list nodes of type
-      <code>Node&lt;T&gt;</code>, and an allocator <code>a</code> for <code>T</code> of type <code>Alloc</code>. We have to design
-      <code>Node&lt;T&gt;</code> so that it is trivially constructible and contains storage for <code>T</code>; for example:</p>
+    <p>This example is worth spelling out in detail. Suppose we have elements of type <code>T</code>,
+      list nodes of type <code>Node&lt;T&gt;</code>, and an allocator <code>a</code> for <code>T</code>
+      of type <code>Alloc</code>. For example:</p>
     <div class="code">template &lt;typename T&gt; struct Node {
-      &nbsp;&nbsp;Node * prev;
-      &nbsp;&nbsp;Node * next;
+      &nbsp;&nbsp;using NodeTraits = std::allocator_traits&lt;Alloc&gt;::rebind_traits&lt;Node&gt;;
+      &nbsp;&nbsp;NodeTraits::pointer prev;
+      &nbsp;&nbsp;NodeTraits::pointer next;
       &nbsp;&nbsp;typename std::aligned_storage&lt;sizeof(T), alignof(T)&gt;::type storage;
     };</div>
     <p>We need a helper function to access the storage as though it were a <code>T</code>:</p>
@@ -357,6 +359,10 @@ NodeTraits::construct(n_a, storage(trueaddress(ptr)), x, y, z);           // con
 NodeTraits::destroy(n_a, storage(trueaddress(ptr)));                      // ~T()
 
 NodeTraits::deallocate(n_a, ptr, 1);                                      // deallocate node space</div>
+
+    <p>(We have assumed here for simplicity that <code>Node&lt;T&gt;</code> is trivially
+      constructible, so that a node&rsquo;s lifetime begins as soon as storage for it is
+      allocated.)</p>
 
     <p>Note that <code>n_a</code> is a rebound copy for <code>Node&lt;T&gt;</code> of the original allocator <code>a</code>. Moreover,
       we use <code>n_a</code> and not <code>a</code> to construct elements, even though the elements are actually of type <code>T</code>,
