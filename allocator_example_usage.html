@@ -125,13 +125,13 @@ struct ArenaAllocator
     template &lt;typename U&gt;
     bool operator==(ArenaAllocator&lt;U&gt; const &amp; rhs) const
     {
-        return lhs.arena == rhs.arena;
+        return arena == rhs.arena;
     }
 
     template &lt;typename U&gt;
     bool operator!=(ArenaAllocator&lt;U&gt; const &amp; rhs) const
     {
-        return lhs.arena != rhs.arena;
+        return arena != rhs.arena;
     }
 
 private:
